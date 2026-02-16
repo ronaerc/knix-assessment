@@ -9,6 +9,65 @@
  */
 {
   "sections": {
+    "hero": {
+      "type": "hero-snowboard",
+      "settings": {
+        "badge_text": "New Release 2026",
+        "heading": "The Hidden Snowboard",
+        "subheading": "Where stealth meets style.",
+        "product_image": "shopify://shop_images/Main_c8ff0b5d-c712-429a-be00-b29bd55cbc9d.jpg",
+        "button_text": "Shop Now",
+        "button_link": "/products/the-hidden-snowboard",
+        "secondary_text": "Learn More",
+        "secondary_link": "",
+        "show_price": true,
+        "price": "$749.95"
+      }
+    },
+    "features": {
+      "type": "features-bar",
+      "blocks": {
+        "feature_GhFXwt": {
+          "type": "feature",
+          "settings": {
+            "icon": "star",
+            "title": "Star",
+            "description": "You'll look like a celebrity!"
+          }
+        },
+        "feature_MtazXP": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "title": "Protection",
+            "description": "You'll never get injured again!"
+          }
+        },
+        "feature_TaTcTR": {
+          "type": "feature",
+          "settings": {
+            "icon": "mountain",
+            "title": "Mountains",
+            "description": "It loves mountains!"
+          }
+        },
+        "feature_ACnM4t": {
+          "type": "feature",
+          "settings": {
+            "icon": "bolt",
+            "title": "Fast",
+            "description": "OMG So quick!"
+          }
+        }
+      },
+      "block_order": [
+        "feature_GhFXwt",
+        "feature_MtazXP",
+        "feature_TaTcTR",
+        "feature_ACnM4t"
+      ],
+      "settings": {}
+    },
     "6a3bb789-ce10-45f5-ae67-e2063ef8c76b": {
       "type": "image-banner",
       "blocks": {

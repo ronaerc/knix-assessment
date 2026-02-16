@@ -1,0 +1,80 @@
+<section class="tw-bg-hidden-dark tw-border-y tw-border-white/10">
+  <div class="tw-container tw-mx-auto tw-px-6">
+    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-4 md:tw-divide-x md:tw-divide-white/10">
+      {% for block in section.blocks %}
+        <div class="tw-py-8 tw-px-6 tw-text-center" {{ block.shopify_attributes }}>
+          <div class="tw-inline-flex tw-items-center tw-justify-center tw-w-12 tw-h-12 tw-mb-4 tw-rotate-45 tw-bg-gradient-to-br tw-from-hidden-peach tw-to-hidden-cyan">
+            {% if block.settings.icon == 'mountain' %}
+              <svg class="tw-w-6 tw-h-6 tw-text-black tw--rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 18H3L5 3z"></path>
+              </svg>
+            {% elsif block.settings.icon == 'shield' %}
+              <svg class="tw-w-6 tw-h-6 tw-text-black tw--rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            {% elsif block.settings.icon == 'star' %}
+              <svg class="tw-w-6 tw-h-6 tw-text-black tw--rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+              </svg>
+            {% else %}
+              <svg class="tw-w-6 tw-h-6 tw-text-black tw--rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            {% endif %}
+          </div>
+          <h3 class="tw-text-white tw-font-semibold tw-mb-1">{{ block.settings.title }}</h3>
+          <p class="tw-text-gray-500 tw-text-sm">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Features Bar",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "mountain", "label": "Mountain" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "star", "label": "Star" },
+            { "value": "bolt", "label": "Bolt" }
+          ],
+          "default": "bolt"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Feature description here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Bar",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "mountain", "title": "All-Mountain", "description": "Versatile performance" } },
+        { "type": "feature", "settings": { "icon": "shield", "title": "Durable Core", "description": "Built to last" } },
+        { "type": "feature", "settings": { "icon": "star", "title": "Award Winning", "description": "Industry recognized" } },
+        { "type": "feature", "settings": { "icon": "bolt", "title": "Responsive", "description": "Instant feedback" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

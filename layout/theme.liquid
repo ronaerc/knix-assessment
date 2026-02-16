@@ -34,6 +34,31 @@
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     {{ content_for_header }}
 
+    <!-- Tailwind CSS CDN -->
+    <!-- Ignore the defer and async warning. I don't want a flash of unstyled content -->
+    <!-- Added the need for the tw- prefix as tailwind was breaking the grid layout of the collection page -->
+    <!-- Took the colors from the hidden board product -->
+    <script src="https://cdn.tailwindcss.com" ></script>
+    <script>
+      tailwind.config = {
+        prefix: 'tw-',
+        theme: {
+          extend: {
+            colors: {
+              'hidden-black': '#0f0f0f',
+              'hidden-dark': '#1a1a1a',
+              'hidden-peach': '#f4a985',
+              'hidden-orange': '#f28b5f',
+              'hidden-pink': '#e966a0',
+              'hidden-magenta': '#d44d9a',
+              'hidden-purple': '#9b8ec4',
+              'hidden-cyan': '#5ec4d4',
+            }
+          }
+        }
+      }
+    </script>
+
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
       assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
