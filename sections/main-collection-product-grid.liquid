@@ -165,7 +165,11 @@
                   endif
                    
                   # I use the date to randomize the position of the touts. We had one a the end because of the for loop index starting at 0
-                  assign tout_number = 'now' | date: '%N' | modulo: total_touts | plus: 1
+                  # assign tout_number = 'now' | date: '%N' | modulo: total_touts | plus: 1
+
+                  # removed the ranodm touts as it was showing the same tout multiple times instead just rotate them in order. 
+                  assign tout_index = forloop.index | divided_by: products_before_tout
+                  assign tout_number = tout_index | modulo: total_touts | plus: 1
                 -%}
                 
                 <li class="grid__item">
