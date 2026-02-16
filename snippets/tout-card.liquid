@@ -1,0 +1,118 @@
+{% comment %}
+  Renders a tout (promotional) card
+
+  Accepts:
+  - toutTitle: {String} Headline text (optional)
+  - toutSubtitle: {String} Supporting text (optional)
+  - toutCTA: {String} Call-to-action button text (optional)
+  - toutURL: {String} Link destination (optional)
+  - toutImage: {String} Image URL (required)
+  - media_aspect_ratio: {String} Size of the tout image card. Values are "square", "portrait", "adapt". Default is "portrait" (optional). Taken from product crad.
+
+  Usage:
+  {% render 'tout-card',
+    toutTitle: 'Title',
+    toutSubtitle: 'Subtitle',
+    toutCTA: 'Shop Now',
+    toutURL: '/collections/all',
+    toutImage: 'https://example.com/image.jpg',
+    media_aspect_ratio: 'portrait'
+  %}
+{% endcomment %}
+
+{%- liquid
+  # Check for missing content right at the top
+  assign has_image = false
+  assign has_title = false
+  assign has_subtitle = false
+  assign has_cta = false
+  assign has_url = false
+
+  if tout_image != blank 
+    assign has_image = true
+  endif
+
+  if tout_title != blank 
+    assign has_title = true
+  endif
+
+  if tout_subtitle != blank 
+    assign has_subtitle = true
+  endif
+
+  if tout_cta != blank 
+    assign has_cta = true
+  endif
+
+  if tout_url != blank 
+    assign has_url = true
+  endif
+
+  assign has_text_content = false
+  if has_title or has_subtitle or has_cta
+    assign has_text_content = true
+  endif
+
+  # We match the aspect ratio of the regular product cards.
+
+  assign ratio = 1
+  if media_aspect_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif media_aspect_ratio == 'adapt'
+    assign ratio = 0.8
+  endif
+  
+  assign ratio_percent = 1 | divided_by: ratio | times: 100
+-%}
+
+
+{%- if has_image -%}
+  <div class="tout-card">
+    {%- if has_url -%}
+      <a 
+        href="{{ tout_url }}"
+        class="tout-card__link"
+        aria-label="{{ tout_title | default: tout_cta | default: 'View promotion' | escape }}"
+      >
+    {%- else -%}
+      <div class="tout-card__container">
+    {%- endif -%}
+    
+      <div class="tout-card__media" style="--ratio-percent: {{ ratio_percent }}%;">
+        <img
+          src="{{ tout_image | escape }}"
+          alt="{{ tout_title | default: 'Promotional image' | escape }}"
+          class="tout-card__image"
+          loading="lazy"
+          width="800"
+          height="1000"
+        >
+        
+        {%- if has_text_content -%}
+          <div class="tout-card__overlay" aria-hidden="true"></div>
+        {%- endif -%}
+        
+        {%- if has_text_content -%}
+          <div class="tout-card__content">
+            {%- if has_title -%}
+              <h3 class="tout-card__title">{{ tout_title }}</h3>
+            {%- endif -%}
+            
+            {%- if has_subtitle -%}
+              <p class="tout-card__subtitle">{{ tout_subtitle }}</p>
+            {%- endif -%}
+            
+            {%- if has_cta -%}
+              <span class="tout-card__cta">{{ tout_cta }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+      
+    {%- if has_url -%}
+      </a>
+    {%- else -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
