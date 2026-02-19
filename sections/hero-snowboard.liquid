@@ -33,6 +33,7 @@
         </div>
         
         <!-- Price Tag -->
+        <!-- We use bg-clip-text to clip the background to the text shape. The span is actually 100% width. tw-text-transparent is then used to hide the text color. This goves the text a gradient effect. -->
         {% if section.settings.show_price %}
         <div class="tw-pt-4">
           <span class="tw-text-gray-500 tw-text-sm tw-uppercase tw-tracking-wide">Starting at</span>
@@ -46,8 +47,6 @@
       <!-- Product Image -->
       <div class="tw-relative tw-flex tw-justify-center lg:tw-justify-end">
         <div class="tw-relative">
-          <!-- Glow Effect -->
-          <div class="tw-absolute tw-inset-0 tw-bg-gradient-to-b tw-from-hidden-peach tw-via-hidden-pink tw-to-hidden-cyan tw-blur-2xl tw-opacity-30 tw-scale-75"></div>
           
           {% if section.settings.product_image %}
             <img src="{{ section.settings.product_image | image_url: width: 800 }}" 
