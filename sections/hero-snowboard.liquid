@@ -9,52 +9,89 @@
       
       <!-- Text Content -->
       <div class="tw-text-white tw-space-y-8">
-        <span class="tw-inline-block tw-px-4 tw-py-2 tw-bg-white/10 tw-backdrop-blur tw-rounded-full tw-text-sm tw-uppercase tw-tracking-widest">
-          {{ section.settings.badge_text }}
-        </span>
+
+        {% if section.settings.badge_text != blank %}
+          <span class="tw-inline-block tw-px-4 tw-py-2 tw-bg-white/10 tw-backdrop-blur tw-rounded-full tw-text-sm tw-uppercase tw-tracking-widest">
+            {{ section.settings.badge_text }}
+          </span>
+        {% endif %}
         
-        <h1 class="tw-text-5xl lg:tw-text-7xl tw-font-bold tw-leading-tight tw-text-gray-400">
-          {{ section.settings.heading }}
-        </h1>
+        {% assign title = section.settings.product.title | default: section.settings.heading %}
+        {% if title != blank %}
+          <h1 class="tw-text-5xl lg:tw-text-7xl tw-font-bold tw-leading-tight tw-text-gray-400">
+            {{ title }}
+          </h1>
+        {% endif %}
         
-        <p class="tw-text-xl tw-text-gray-400 tw-max-w-md">
-          {{ section.settings.subheading }}
-        </p>
+        {% assign description = section.settings.product.description | default: section.settings.subheading %}
+        {% if description != blank %}
+          <p class="tw-text-xl tw-text-gray-400 tw-max-w-md">
+            {{ description | strip_html | truncate: 150 }}
+          </p>
+        {% endif %}
         
-        <div class="tw-flex tw-flex-wrap tw-gap-4">
-          <a href="{{ section.settings.button_link }}" 
-             class="tw-inline-block tw-px-8 tw-py-4 tw-bg-gradient-to-r tw-from-hidden-peach tw-via-hidden-pink tw-to-hidden-cyan tw-text-black tw-font-semibold tw-rounded-full hover:tw-opacity-90 tw-transition">
-            {{ section.settings.button_text }}
-          </a>
-          <a href="{{ section.settings.secondary_link }}" 
-             class="tw-inline-block tw-px-8 tw-py-4 tw-border tw-border-white/30 tw-text-white tw-rounded-full hover:tw-bg-white/10 tw-transition">
-            {{ section.settings.secondary_text }}
-          </a>
-        </div>
+        {% if section.settings.button_text != blank or section.settings.secondary_text != blank %}
+          <div class="tw-flex tw-flex-wrap tw-gap-4">
+            {% if section.settings.button_text != blank %}
+              {% assign button_url = section.settings.product.url | default: section.settings.button_link %}
+              <a href="{{ button_url }}" 
+                class="tw-inline-block tw-px-8 tw-py-4 tw-bg-gradient-to-r tw-from-hidden-peach tw-via-hidden-pink tw-to-hidden-cyan tw-text-black tw-font-semibold tw-rounded-full hover:tw-opacity-90 tw-transition">
+                {{ section.settings.button_text }}
+              </a>
+            {% endif %}
+            {% if section.settings.secondary_text != blank and section.settings.secondary_link != blank %}
+              <a href="{{ section.settings.secondary_link }}" 
+                class="tw-inline-block tw-px-8 tw-py-4 tw-border tw-border-white/30 tw-text-white tw-rounded-full hover:tw-bg-white/10 tw-transition">
+                {{ section.settings.secondary_text }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
         
         <!-- Price Tag -->
         <!-- We use bg-clip-text to clip the background to the text shape. The span is actually 100% width. tw-text-transparent is then used to hide the text color. This goves the text a gradient effect. -->
-        {% if section.settings.show_price %}
+
+        {% assign price = section.settings.product.price | default: nil %}
+        {% assign fallback_price = section.settings.price %}
+        {% liquid
+          assign has_price = false
+          if price != nil
+            assign has_price = true
+          elsif fallback_price != blank
+            assign has_price = true
+          endif
+        %}
+
+
+        {% if section.settings.show_price and has_price %}
         <div class="tw-pt-4">
           <span class="tw-text-gray-500 tw-text-sm tw-uppercase tw-tracking-wide">Starting at</span>
           <span class="tw-block tw-text-3xl tw-font-bold tw-bg-gradient-to-r tw-from-hidden-peach tw-to-hidden-cyan tw-bg-clip-text tw-text-transparent">
-            {{ section.settings.price }}
+            {% if section.settings.product %}
+                {{ section.settings.product.price | money }}
+              {% else %}
+                {{ fallback_price }}
+              {% endif %}
           </span>
         </div>
         {% endif %}
       </div>
       
       <!-- Product Image -->
+      {% assign product_image = section.settings.product.featured_image | default: section.settings.product_image %}
+      {% if product_image != blank %}
       <div class="tw-relative tw-flex tw-justify-center lg:tw-justify-end">
         <div class="tw-relative">
           
-          {% if section.settings.product_image %}
-            <img src="{{ section.settings.product_image | image_url: width: 800 }}" 
-                 alt="{{ section.settings.heading }}"
-                 class="tw-relative tw-z-10 tw-max-h-[80vh] tw-w-auto tw-object-contain tw-drop-shadow-2xl">
-          {% endif %}
+          <img src="{{ product_image | image_url: width: 800 }}" 
+                 alt="{{ section.settings.product.featured_image.alt | default: section.settings.product.title | default: section.settings.heading | escape }}"
+                 class="tw-relative tw-z-10 tw-max-h-[80vh] tw-w-auto tw-object-contain tw-drop-shadow-2xl"
+                 loading="lazy"
+                 width="800"
+                 height="auto">
         </div>
       </div>
+       {% endif %}
       
     </div>
   </div>
@@ -71,6 +108,16 @@
 {
   "name": "Hero Snowboard",
   "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Fallback Content",
+      "info": "Used when no product is selected"
+    },
     {
       "type": "text",
       "id": "badge_text",
