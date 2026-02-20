@@ -84,10 +84,17 @@
         <div class="tw-relative">
           
           <img src="{{ product_image | image_url: width: 800 }}" 
+            srcset="{{ product_image | image_url: width: 400 }} 400w,
+                   {{ product_image | image_url: width: 600 }} 600w,
+                   {{ product_image | image_url: width: 800 }} 800w,
+                   {{ product_image | image_url: width: 1000 }} 1000w,
+                   {{ product_image | image_url: width: 1200 }} 1200w"
+           sizes="(max-width: 768px) 100vw, 50vw"
                  alt="{{ section.settings.product.featured_image.alt | default: section.settings.product.title | default: section.settings.heading | escape }}"
                  class="tw-relative tw-z-10 lg:tw-max-h-[80vh] tw-max-h-[100vh] tw-w-auto tw-object-contain tw-drop-shadow-2xl"
                  width="800"
-                 height="auto">
+                 height="auto"
+                 fetchpriority="high">
         </div>
       </div>
        {% endif %}
