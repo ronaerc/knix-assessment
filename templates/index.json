@@ -12,6 +12,7 @@
     "hero": {
       "type": "hero-snowboard",
       "settings": {
+        "product": "the-hidden-snowboard",
         "badge_text": "New Release 2026",
         "heading": "The Hidden Snowboard",
         "subheading": "Where stealth meets style.",
