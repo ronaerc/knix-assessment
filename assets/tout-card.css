@@ -41,7 +41,7 @@
 .tout-card__media::before {
   content: '';
   display: block;
-  padding-bottom: var(--ratio-percent, 125%);
+  padding-bottom: var(--ratio-percent);
 }
 
 /* Image - fills the container */
@@ -153,5 +153,27 @@
   .tout-card__cta {
     padding: 0.6rem 1rem;
     font-size: 1.1rem;
+  }
+}
+
+/* Visible focus indicator */
+.tout-card__link:focus-visible {
+  outline: 0.3rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.3rem;
+}
+
+/* Remove default focus outline (we're using focus-visible instead) */
+.tout-card__link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .tout-card__image {
+    transition: none;
+  }
+  
+  .tout-card__link:hover .tout-card__image {
+    transform: none;
   }
 }

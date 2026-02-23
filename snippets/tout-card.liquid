@@ -59,7 +59,8 @@
   if media_aspect_ratio == 'portrait'
     assign ratio = 0.8
   elsif media_aspect_ratio == 'adapt'
-    assign ratio = 0.8
+    # I don't have access to the actual image object so I can't calculate the aspect ratio for adapt based on the image dimensions. Instead, I use a fixed ratio that works well for most images.
+    assign ratio = 0.8 
   endif
   
   assign ratio_percent = 1 | divided_by: ratio | times: 100
@@ -103,7 +104,7 @@
             {%- endif -%}
             
             {%- if has_cta -%}
-              <span class="tout-card__cta">{{ tout_cta }}</span>
+              <span class="tout-card__cta" aria-hidden="true">{{ tout_cta }}</span>
             {%- endif -%}
           </div>
         {%- endif -%}
