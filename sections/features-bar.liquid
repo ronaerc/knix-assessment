@@ -1,11 +1,33 @@
 {% if section.blocks.size > 0 %}
 <section class="tw-bg-hidden-dark tw-border-y tw-border-white/10" aria-label="Product features">
+  <!-- Add hidden H2 for screenreaders -->
   <h2 class="tw-sr-only">Product Features</h2>
-  <div class="tw-container tw-mx-auto tw-px-6">
-    <ul class="tw-grid tw-grid-cols-1 md:tw-grid-cols-4 md:tw-divide-x md:tw-divide-white/10" role="list">
+  <div class="lg:tw-container lg:tw-mx-auto lg:tw-px-6 sm:tw-w-full lg:w-auto">
+    <!-- Changed from a div to ul to use semantic HTML for the list of features -->
+    <ul class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4" role="list">
       {% for block in section.blocks %}
-        <li class="tw-py-8 tw-px-6 tw-text-center" {{ block.shopify_attributes }}>
-          <!-- Hide the container from screenreaders as it's jutst decorative -->
+        {% comment %} Calculate position of each item for the border placement {% endcomment %}
+        {% assign remainder = forloop.index | modulo: 2 %}
+        
+        {% assign is_first_col = false %}
+        {% if remainder == 1 %}
+          {% assign is_first_col = true %}
+        {% endif %}
+        
+        {% assign is_last_row = false %}
+        {% if forloop.index > 2 %}
+          {% assign is_last_row = true %}
+        {% endif %}
+        <li class="tw-py-8 tw-px-6 tw-text-center
+          {% unless forloop.last %}tw-border-b{% endunless %}
+      
+          {% if is_first_col %}sm:tw-border-r{% endif %}
+          {% if is_last_row %}sm:tw-border-b-0{% endif %}
+      
+          {% unless forloop.last %}lg:tw-border-r{% endunless %}
+          lg:tw-border-b-0 tw-border-white/10
+          ">
+          <!-- Hide the container and svg from screenreaders as it's jutst decorative -->
           <div class="tw-inline-flex tw-items-center tw-justify-center tw-w-12 tw-h-12 tw-mb-4 tw-rotate-45 tw-bg-gradient-to-br tw-from-hidden-peach tw-to-hidden-cyan" aria-hidden="true">
             {% if block.settings.icon == 'mountain' %}
               <svg class="tw-w-6 tw-h-6 tw-text-black tw--rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
