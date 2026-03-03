@@ -4,8 +4,8 @@
 {% endcomment %}
 
 <section class="best-sellers tw-py-8 md:tw-py-12 lg:tw-py-16">
-  <div class="tw-max-w-7xl tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8">
-    <!-- Header -->
+  <!-- Header - constrained to 160rem -->
+  <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8">
     <div class="tw-flex tw-items-center tw-justify-between tw-mb-6 md:tw-mb-8">
       <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-black tw-text-gray-900">
         {{ section.settings.heading }}
@@ -24,28 +24,27 @@
     </div>
   </div>
 
-  <!-- Desktop Slider -->
+  <!-- Desktop Slider - bleeds to right edge -->
   <div class="tw-hidden md:tw-block">
-    <div 
-      id="desktop-slider-{{ section.id }}" 
-      class="tw-flex tw-gap-6 tw-overflow-x-auto tw-pb-4 tw-px-4 md:tw-px-6 lg:tw-px-8 tw-scroll-smooth scrollbar-hide"
-      style="scroll-snap-type: x mandatory;"
-    >
-      <!-- Left spacer for max-width alignment -->
-      <div class="tw-flex-shrink-0 tw-w-[calc((100vw-80rem)/2+1rem)] tw-max-w-[calc((100vw-80rem)/2+1rem)] tw-min-w-0 tw-hidden xl:tw-block"></div>
-      
-      {% for block in section.blocks %}
-        <div class="tw-flex-shrink-0 tw-w-[280px] lg:tw-w-[300px]" style="scroll-snap-align: start;">
-          {% render 'best-seller-card', block: block, index: forloop.index %}
-        </div>
-      {% endfor %}
-      
-      <!-- Right spacer -->
-      <div class="tw-flex-shrink-0 tw-w-4 md:tw-w-6 lg:tw-w-8"></div>
+    <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8">
+      <div 
+        id="desktop-slider-{{ section.id }}" 
+        class="tw-flex tw-gap-6 tw-overflow-x-auto tw-pb-4 tw-scroll-smooth scrollbar-hide"
+        style="scroll-snap-type: x mandatory; margin-right: calc(-1 * (100vw - 100%));"
+      >
+        {% for block in section.blocks %}
+          <div class="tw-flex-shrink-0 tw-w-[280px] lg:tw-w-[300px]" style="scroll-snap-align: start;">
+            {% render 'best-seller-card', block: block, index: forloop.index %}
+          </div>
+        {% endfor %}
+        
+        <!-- Right spacer so last card can scroll fully into view -->
+        <div class="tw-flex-shrink-0 tw-w-8"></div>
+      </div>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="tw-max-w-7xl tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
+    <!-- Progress Bar - constrained to 160rem -->
+    <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
       <div class="tw-h-0.5 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden">
         <div 
           id="progress-bar-{{ section.id }}" 
@@ -56,8 +55,8 @@
     </div>
   </div>
 
-  <!-- Mobile Grid -->
-  <div class="md:tw-hidden tw-px-4">
+  <!-- Mobile Grid - constrained to 160rem -->
+  <div class="md:tw-hidden tw-max-w-[160rem] tw-mx-auto tw-px-4">
     <!-- Visible products (first 4) -->
     <div class="tw-grid tw-grid-cols-2 tw-gap-4">
       {% for block in section.blocks limit: 4 %}
