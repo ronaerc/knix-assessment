@@ -24,34 +24,32 @@
     </div>
   </div>
 
-  <!-- Desktop Slider - bleeds to right edge -->
-  <div class="tw-hidden md:tw-block">
-    <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8">
-      <div 
-        id="desktop-slider-{{ section.id }}" 
-        class="tw-flex tw-gap-6 tw-overflow-x-auto tw-pb-4 tw-scroll-smooth scrollbar-hide"
-        style="scroll-snap-type: x mandatory; margin-right: calc(-1 * (100vw - 100%));"
-      >
-        {% for block in section.blocks %}
-          <div class="tw-flex-shrink-0 tw-w-[280px] lg:tw-w-[300px]" style="scroll-snap-align: start;">
-            {% render 'best-seller-card', block: block, index: forloop.index %}
-          </div>
-        {% endfor %}
-        
-        <!-- Right spacer so last card can scroll fully into view -->
-        <div class="tw-flex-shrink-0 tw-w-8"></div>
-      </div>
+  <!-- Desktop Slider - full width, left-aligned to 160rem container -->
+  <div class="tw-hidden md:tw-block tw-overflow-hidden">
+    <div 
+      id="desktop-slider-{{ section.id }}" 
+      class="desktop-slider tw-flex tw-gap-6 tw-overflow-x-auto tw-pb-4 tw-scroll-smooth scrollbar-hide"
+      style="scroll-snap-type: x mandatory;"
+    >
+      {% for block in section.blocks %}
+        <div class="tw-flex-shrink-0 tw-w-[280px] lg:tw-w-[300px] {% if forloop.first %}first-card{% endif %}" style="scroll-snap-align: start;">
+          {% render 'best-seller-card', block: block, index: forloop.index %}
+        </div>
+      {% endfor %}
+      
+      <!-- Right spacer -->
+      <div class="tw-flex-shrink-0 tw-w-8"></div>
     </div>
+  </div>
 
-    <!-- Progress Bar - constrained to 160rem -->
-    <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
-      <div class="tw-h-0.5 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden">
-        <div 
-          id="progress-bar-{{ section.id }}" 
-          class="tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-duration-150"
-          style="width: 30%;"
-        ></div>
-      </div>
+  <!-- Progress Bar - constrained to 160rem -->
+  <div class="tw-hidden md:tw-block tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
+    <div class="tw-h-0.5 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden">
+      <div 
+        id="progress-bar-{{ section.id }}" 
+        class="tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-duration-150"
+        style="width: 30%;"
+      ></div>
     </div>
   </div>
 
@@ -72,7 +70,7 @@
         style="max-height: 0; opacity: 0; margin-top: 0;"
       >
         {% for block in section.blocks offset: 4 %}
-          <div class="tw-pt-4 first:tw-pt-4">
+          <div class="tw-pt-4">
             {% render 'best-seller-card', block: block, index: forloop.index | plus: 4 %}
           </div>
         {% endfor %}
@@ -100,6 +98,20 @@
   }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+  
+  /* Calculate left padding to align with 160rem container */
+  .desktop-slider {
+    --container-max-width: 160rem;
+    --container-padding: 2rem; /* lg:px-8 = 2rem */
+    padding-left: max(var(--container-padding), calc((100vw - var(--container-max-width)) / 2 + var(--container-padding)));
+    padding-right: 2rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .desktop-slider {
+      --container-padding: 1.5rem; /* md:px-6 = 1.5rem */
+    }
   }
 </style>
 
@@ -136,7 +148,7 @@
         
         // Calculate width based on visible portion + scroll position
         const visibleRatio = slider.clientWidth / slider.scrollWidth;
-        const barWidth = Math.max(visibleRatio * 100, 20); // Minimum 20% width
+        const barWidth = Math.max(visibleRatio * 100, 20);
         const maxLeft = 100 - barWidth;
         const leftPosition = (scrollPercentage / 100) * maxLeft;
         
