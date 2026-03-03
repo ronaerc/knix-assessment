@@ -3,19 +3,19 @@
   File: sections/best-sellers.liquid
 {% endcomment %}
 
-<section class="best-sellers py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+<section class="best-sellers tw-py-8 md:tw-py-12 lg:tw-py-16 tw-px-4 md:tw-px-6 lg:tw-px-8 tw-max-w-7xl tw-mx-auto">
   <!-- Header -->
-  <div class="flex items-center justify-between mb-6 md:mb-8">
-    <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900">
+  <div class="tw-flex tw-items-center tw-justify-between tw-mb-6 md:tw-mb-8">
+    <h2 class="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl tw-font-black tw-text-gray-900">
       {{ section.settings.heading }}
     </h2>
     {% if section.settings.show_view_all %}
       <a 
         href="{{ section.settings.view_all_link }}" 
-        class="hidden md:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+        class="tw-hidden md:tw-flex tw-items-center tw-gap-2 tw-text-sm tw-text-gray-600 hover:tw-text-gray-900 tw-transition-colors"
       >
         {{ section.settings.view_all_text }}
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-4 tw-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </a>
@@ -25,14 +25,14 @@
   <!-- Product Grid -->
   <div class="product-grid">
     <!-- Visible products (always shown) -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+    <div class="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-5 tw-gap-4 md:tw-gap-6">
       {% for block in section.blocks limit: 4 %}
         {% render 'best-seller-card', block: block, index: forloop.index %}
       {% endfor %}
       
       <!-- Desktop: Show remaining products inline -->
       {% for block in section.blocks offset: 4 %}
-        <div class="hidden md:block">
+        <div class="tw-hidden md:tw-block">
           {% render 'best-seller-card', block: block, index: forloop.index | plus: 4 %}
         </div>
       {% endfor %}
@@ -41,11 +41,11 @@
     <!-- Mobile: Hidden products container -->
     <div 
       id="mobile-hidden-products" 
-      class="md:hidden grid grid-cols-2 gap-4 overflow-hidden transition-all duration-500 ease-in-out"
+      class="md:tw-hidden tw-grid tw-grid-cols-2 tw-gap-4 tw-overflow-hidden tw-transition-all tw-duration-500 tw-ease-in-out"
       style="max-height: 0; opacity: 0;"
     >
       {% for block in section.blocks offset: 4 %}
-        <div class="pt-4">
+        <div class="tw-pt-4">
           {% render 'best-seller-card', block: block, index: forloop.index | plus: 4 %}
         </div>
       {% endfor %}
@@ -53,10 +53,10 @@
 
     <!-- Mobile: Show More Button -->
     {% if section.blocks.size > 4 %}
-      <div class="md:hidden flex justify-center mt-6">
+      <div class="md:tw-hidden tw-flex tw-justify-center tw-mt-6">
         <button 
           id="show-more-btn"
-          class="bg-gray-900 text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+          class="tw-bg-gray-900 tw-text-white tw-px-8 tw-py-3 tw-rounded-full tw-text-sm tw-font-medium hover:tw-bg-gray-800 tw-transition-colors"
           onclick="toggleProducts()"
         >
           {{ section.settings.show_more_text }}

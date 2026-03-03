@@ -8,13 +8,13 @@
 {% assign hover_image = block.settings.hover_image | default: product.images[1] %}
 {% assign bg_color = block.settings.background_color | default: '#f5f5f5' %}
 
-<div class="product-card group cursor-pointer" {{ block.shopify_attributes }}>
+<div class="product-card tw-group tw-cursor-pointer" {{ block.shopify_attributes }}>
   <!-- Image Container -->
-  <a href="{{ product.url }}" class="block relative aspect-square overflow-hidden rounded-lg mb-3" style="background-color: {{ bg_color }};">
+  <a href="{{ product.url }}" class="tw-block tw-relative tw-aspect-square tw-overflow-hidden tw-rounded-lg tw-mb-3" style="background-color: {{ bg_color }};">
     <!-- Badges -->
-    <div class="absolute top-2 left-2 right-2 flex justify-between z-10">
+    <div class="tw-absolute tw-top-2 tw-left-2 tw-right-2 tw-flex tw-justify-between tw-z-10">
       {% if block.settings.show_best_seller_badge %}
-        <span class="bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded">
+        <span class="tw-bg-red-600 tw-text-white tw-text-[10px] md:tw-text-xs tw-font-bold tw-px-2 tw-py-1 rounded">
           BEST SELLER
         </span>
       {% else %}
@@ -22,7 +22,7 @@
       {% endif %}
       
       {% if block.settings.show_sale_badge %}
-        <span class="bg-yellow-400 text-gray-900 text-[10px] md:text-xs font-bold px-2 py-1 rounded">
+        <span class="tw-bg-yellow-400 tw-text-gray-900 tw-text-[10px] md:tw-text-xs tw-font-bold tw-px-2 tw-py-1 rounded">
           {{ block.settings.sale_badge_text }}
         </span>
       {% endif %}
@@ -33,13 +33,13 @@
       <img 
         src="{{ primary_image | image_url: width: 600 }}"
         alt="{{ product.title | escape }}"
-        class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-300 ease-in-out group-hover:opacity-0"
+        class="tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-contain tw-p-4 tw-transition-opacity tw-duration-300 tw-ease-in-out tw-group-hover:opacity-0"
         loading="lazy"
         width="600"
         height="600"
       >
     {% else %}
-      {{ 'product-1' | placeholder_svg_tag: 'absolute inset-0 w-full h-full object-contain p-4' }}
+      {{ 'product-1' | placeholder_svg_tag: 'tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-contain tw-p-4' }}
     {% endif %}
 
     <!-- Hover Image -->
@@ -47,7 +47,7 @@
       <img 
         src="{{ hover_image | image_url: width: 600 }}"
         alt="{{ product.title | escape }}"
-        class="absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100"
+        class="tw-absolute tw-inset-0 tw-w-full tw-h-full tw-object-contain tw-p-4 tw-transition-opacity tw-duration-300 tw-ease-in-out tw-opacity-0 tw-group-hover:opacity-100"
         loading="lazy"
         width="600"
         height="600"
@@ -58,31 +58,31 @@
   <!-- Product Info -->
   <div class="space-y-1">
     <!-- Title -->
-    <a href="{{ product.url }}" class="block">
-      <h3 class="text-xs md:text-sm font-semibold text-gray-900 uppercase leading-tight line-clamp-2 hover:text-gray-600 transition-colors">
+    <a href="{{ product.url }}" class="tw-block">
+      <h3 class="tw-text-xs md:tw-text-sm tw-font-semibold tw-text-gray-900 tw-uppercase tw-leading-tight tw-line-clamp-2 hover:tw-text-gray-600 tw-transition-colors">
         {{ product.title | default: 'Product Title' }}
       </h3>
     </a>
 
     <!-- Rating -->
-    <div class="flex items-center gap-1">
-      <div class="flex text-yellow-400">
+    <div class="tw-flex tw-items-center tw-gap-1">
+      <div class="tw-flex tw-text-yellow-400">
         {% for i in (1..5) %}
-          <svg class="w-3 h-3 md:w-4 md:h-4 fill-current" viewBox="0 0 20 20">
+          <svg class="tw-w-3 tw-h-3 md:tw-w-4 md:tw-h-4 tw-fill-current" viewBox="0 0 20 20">
             <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
           </svg>
         {% endfor %}
       </div>
-      <span class="text-[10px] md:text-xs text-gray-500">1,234 Reviews</span>
+      <span class="tw-text-[10px] md:tw-text-xs tw-text-gray-500">1,234 Reviews</span>
     </div>
 
     <!-- Price -->
-    <div class="flex items-center gap-2">
-      <span class="text-sm md:text-base font-bold text-gray-900">
+    <div class="tw-flex tw-items-center tw-gap-2">
+      <span class="tw-text-sm md:tw-text-base tw-font-bold tw-text-gray-900">
         {{ product.price | money | default: '$104.95' }}
       </span>
       {% if product.compare_at_price > product.price %}
-        <span class="text-xs md:text-sm text-gray-400 line-through">
+        <span class="tw-text-xs md:tw-text-sm tw-text-gray-400 tw-line-through">
           {{ product.compare_at_price | money }}
         </span>
       {% endif %}
