@@ -16,7 +16,7 @@
     <!-- Badges -->
     <div class="tw-absolute tw-top-3 tw-left-3 tw-right-3 tw-flex tw-justify-between tw-items-start tw-z-10">
       {% if block.settings.show_best_seller_badge %}
-        <span class="tw-bg-black tw-text-white tw-text-xs tw-font-bold tw-px-4 tw-py-2 tw-rounded-full tw-uppercase tw-tracking-wide">
+        <span class="tw-bg-white tw-text-black tw-text-xs tw-font-bold tw-italic tw-px-4 tw-py-1.5 tw-rounded-full tw-uppercase tw-tracking-wide tw-border-2 tw-border-black">
           Best Seller
         </span>
       {% else %}
@@ -24,7 +24,7 @@
       {% endif %}
       
       {% if block.settings.show_sale_badge %}
-        <span class="tw-bg-yellow-400 tw-text-gray-900 tw-text-xs tw-font-bold tw-px-4 tw-py-2 tw-rounded-full tw-uppercase tw-tracking-wide">
+        <span class="tw-bg-[#4A7C59] tw-text-black tw-text-xs tw-font-bold tw-px-4 tw-py-1.5 tw-rounded-full tw-uppercase tw-tracking-wide tw-border-2 tw-border-black">
           {{ block.settings.sale_badge_text }}
         </span>
       {% endif %}
