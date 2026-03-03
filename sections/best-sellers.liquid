@@ -3,7 +3,7 @@
   File: sections/best-sellers.liquid
 {% endcomment %}
 
-<section class="best-sellers tw-py-8 md:tw-py-12 lg:tw-py-16 tw-overflow-hidden">
+<section class="best-sellers tw-py-8 md:tw-py-12 lg:tw-py-16">
   <!-- Header - constrained to 160rem -->
   <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8">
     <div class="tw-flex tw-items-center tw-justify-between tw-mb-6 md:tw-mb-8">
@@ -26,29 +26,32 @@
 
   <!-- Desktop Slider -->
   <div class="tw-hidden md:tw-block">
-    <div 
-      id="desktop-slider-{{ section.id }}" 
-      class="desktop-slider tw-flex tw-gap-6 tw-pb-4 scrollbar-hide"
-    >
-      {% for block in section.blocks %}
-        <div class="tw-flex-none tw-w-[280px] lg:tw-w-[300px]" style="scroll-snap-align: start;">
-          {% render 'best-seller-card', block: block, index: forloop.index %}
-        </div>
-      {% endfor %}
-      
-      <!-- Right spacer -->
-      <div class="tw-flex-none tw-w-8"></div>
-    </div>
-  </div>
-
-  <!-- Progress Bar - constrained to 160rem -->
-  <div class="tw-hidden md:tw-block tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
-    <div class="tw-h-0.5 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden">
+    <div class="desktop-slider-wrapper">
       <div 
-        id="progress-bar-{{ section.id }}" 
-        class="tw-h-full tw-bg-gray-900 tw-rounded-full tw-transition-all tw-duration-150"
-        style="width: 30%;"
-      ></div>
+        id="desktop-slider-{{ section.id }}" 
+        class="desktop-slider"
+      >
+        <div class="desktop-slider-track">
+          {% for block in section.blocks %}
+            <div class="desktop-slider-card">
+              {% render 'best-seller-card', block: block, index: forloop.index %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Custom Scrollbar - constrained to 160rem -->
+    <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
+      <div 
+        id="scrollbar-track-{{ section.id }}" 
+        class="scrollbar-track"
+      >
+        <div 
+          id="scrollbar-thumb-{{ section.id }}" 
+          class="scrollbar-thumb"
+        ></div>
+      </div>
     </div>
   </div>
 
@@ -80,7 +83,6 @@
         <button 
           id="show-more-btn-{{ section.id }}"
           class="tw-bg-gray-900 tw-text-white tw-px-8 tw-py-3 tw-rounded-full tw-text-sm tw-font-medium hover:tw-bg-gray-800 tw-transition-colors tw-w-full tw-max-w-xs"
-          onclick="toggleProducts('{{ section.id }}')"
         >
           {{ section.settings.show_more_text }}
         </button>
@@ -90,79 +92,209 @@
 </section>
 
 <style>
-  /* Hide scrollbar but keep functionality */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  /* Slider wrapper */
+  .desktop-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
   }
   
-  /* Slider styles */
+  /* Slider container */
   .desktop-slider {
     --container-max-width: 160rem;
     --container-padding: 2rem;
+    --slider-gap: 1.5rem;
     
-    width: 100%;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .desktop-slider::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Slider track (holds all cards) */
+  .desktop-slider-track {
+    display: inline-flex;
+    gap: var(--slider-gap);
     padding-left: max(var(--container-padding), calc((100vw - var(--container-max-width)) / 2 + var(--container-padding)));
-    padding-right: 2rem;
+    padding-right: var(--container-padding);
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Individual card */
+  .desktop-slider-card {
+    flex: 0 0 300px;
+    width: 300px;
   }
   
   @media (max-width: 1024px) {
     .desktop-slider {
       --container-padding: 1.5rem;
     }
+    
+    .desktop-slider-card {
+      flex: 0 0 280px;
+      width: 280px;
+    }
+  }
+  
+  /* Custom Scrollbar */
+  .scrollbar-track {
+    position: relative;
+    height: 2px;
+    background-color: #e5e5e5;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+  
+  .scrollbar-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2px;
+    background-color: #171717;
+    border-radius: 9999px;
+    cursor: grab;
+    transition: height 0.15s ease;
+  }
+  
+  .scrollbar-thumb:hover,
+  .scrollbar-thumb.is-dragging {
+    height: 6px;
+  }
+  
+  .scrollbar-thumb:active {
+    cursor: grabbing;
+  }
+  
+  .scrollbar-track:hover .scrollbar-thumb {
+    height: 6px;
   }
 </style>
 
 <script>
-  // Mobile toggle functionality
-  function toggleProducts(sectionId) {
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const slider = document.getElementById('desktop-slider-' + sectionId);
+    const scrollbarTrack = document.getElementById('scrollbar-track-' + sectionId);
+    const scrollbarThumb = document.getElementById('scrollbar-thumb-' + sectionId);
+    const showMoreBtn = document.getElementById('show-more-btn-' + sectionId);
     const hiddenProducts = document.getElementById('mobile-hidden-products-' + sectionId);
-    const button = document.getElementById('show-more-btn-' + sectionId);
-    const isExpanded = hiddenProducts.style.maxHeight !== '0px';
-
-    if (isExpanded) {
-      hiddenProducts.style.maxHeight = '0';
-      hiddenProducts.style.opacity = '0';
-      hiddenProducts.style.marginTop = '0';
-      button.textContent = '{{ section.settings.show_more_text }}';
-    } else {
-      hiddenProducts.style.maxHeight = hiddenProducts.scrollHeight + 'px';
-      hiddenProducts.style.opacity = '1';
-      hiddenProducts.style.marginTop = '1rem';
-      button.textContent = '{{ section.settings.show_less_text }}';
-    }
-  }
-
-  // Desktop slider progress bar
-  document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('desktop-slider-{{ section.id }}');
-    const progressBar = document.getElementById('progress-bar-{{ section.id }}');
     
-    if (slider && progressBar) {
-      function updateProgressBar() {
-        const scrollLeft = slider.scrollLeft;
-        const scrollWidth = slider.scrollWidth - slider.clientWidth;
-        const scrollPercentage = scrollWidth > 0 ? (scrollLeft / scrollWidth) * 100 : 0;
+    if (slider && scrollbarTrack && scrollbarThumb) {
+      let isDragging = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      
+      // Calculate and update thumb size and position
+      function updateScrollbar() {
+        const scrollWidth = slider.scrollWidth;
+        const clientWidth = slider.clientWidth;
+        const scrollRatio = clientWidth / scrollWidth;
+        const thumbWidth = Math.max(scrollRatio * 100, 10);
         
-        const visibleRatio = slider.clientWidth / slider.scrollWidth;
-        const barWidth = Math.max(visibleRatio * 100, 20);
-        const maxLeft = 100 - barWidth;
-        const leftPosition = (scrollPercentage / 100) * maxLeft;
+        const maxScroll = scrollWidth - clientWidth;
+        const scrollProgress = maxScroll > 0 ? slider.scrollLeft / maxScroll : 0;
+        const maxThumbLeft = 100 - thumbWidth;
+        const thumbLeft = scrollProgress * maxThumbLeft;
         
-        progressBar.style.width = barWidth + '%';
-        progressBar.style.marginLeft = leftPosition + '%';
+        scrollbarThumb.style.width = thumbWidth + '%';
+        scrollbarThumb.style.left = thumbLeft + '%';
       }
       
-      slider.addEventListener('scroll', updateProgressBar);
-      window.addEventListener('resize', updateProgressBar);
-      updateProgressBar();
+      // Scroll slider when clicking on track
+      scrollbarTrack.addEventListener('click', function(e) {
+        if (e.target === scrollbarThumb) return;
+        
+        const trackRect = scrollbarTrack.getBoundingClientRect();
+        const clickPosition = (e.clientX - trackRect.left) / trackRect.width;
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        
+        slider.scrollTo({
+          left: clickPosition * maxScroll,
+          behavior: 'smooth'
+        });
+      });
+      
+      // Drag functionality for thumb
+      scrollbarThumb.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        scrollbarThumb.classList.add('is-dragging');
+        startX = e.clientX;
+        scrollLeft = slider.scrollLeft;
+        e.preventDefault();
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        
+        const trackRect = scrollbarTrack.getBoundingClientRect();
+        const deltaX = e.clientX - startX;
+        const deltaRatio = deltaX / trackRect.width;
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        
+        slider.scrollLeft = scrollLeft + (deltaRatio * maxScroll);
+      });
+      
+      document.addEventListener('mouseup', function() {
+        isDragging = false;
+        scrollbarThumb.classList.remove('is-dragging');
+      });
+      
+      // Touch support for thumb
+      scrollbarThumb.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        scrollbarThumb.classList.add('is-dragging');
+        startX = e.touches[0].clientX;
+        scrollLeft = slider.scrollLeft;
+      }, { passive: true });
+      
+      document.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        
+        const trackRect = scrollbarTrack.getBoundingClientRect();
+        const deltaX = e.touches[0].clientX - startX;
+        const deltaRatio = deltaX / trackRect.width;
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        
+        slider.scrollLeft = scrollLeft + (deltaRatio * maxScroll);
+      }, { passive: true });
+      
+      document.addEventListener('touchend', function() {
+        isDragging = false;
+        scrollbarThumb.classList.remove('is-dragging');
+      });
+      
+      // Update scrollbar on scroll
+      slider.addEventListener('scroll', updateScrollbar);
+      window.addEventListener('resize', updateScrollbar);
+      
+      // Initial update
+      updateScrollbar();
     }
-  });
+    
+    // Mobile show more toggle
+    if (showMoreBtn && hiddenProducts) {
+      showMoreBtn.addEventListener('click', function() {
+        const isExpanded = hiddenProducts.style.maxHeight !== '0px';
+        
+        if (isExpanded) {
+          hiddenProducts.style.maxHeight = '0';
+          hiddenProducts.style.opacity = '0';
+          hiddenProducts.style.marginTop = '0';
+          showMoreBtn.textContent = '{{ section.settings.show_more_text }}';
+        } else {
+          hiddenProducts.style.maxHeight = hiddenProducts.scrollHeight + 'px';
+          hiddenProducts.style.opacity = '1';
+          hiddenProducts.style.marginTop = '1rem';
+          showMoreBtn.textContent = '{{ section.settings.show_less_text }}';
+        }
+      });
+    }
+  })();
 </script>
 
 {% schema %}
