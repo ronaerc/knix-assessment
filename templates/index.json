@@ -33,7 +33,9 @@
           "settings": {
             "icon": "star",
             "title": "Star",
-            "description": "You'll look like a celebrity!"
+            "description": "You'll look like a celebrity!",
+            "icon_color": "#000000",
+            "feature_link": ""
           }
         },
         "feature_MtazXP": {
@@ -41,7 +43,9 @@
           "settings": {
             "icon": "shield",
             "title": "Protection",
-            "description": "You'll never get injured again!"
+            "description": "You'll never get injured again!",
+            "icon_color": "#000000",
+            "feature_link": ""
           }
         },
         "feature_TaTcTR": {
@@ -49,7 +53,9 @@
           "settings": {
             "icon": "mountain",
             "title": "Mountains",
-            "description": "It loves mountains!"
+            "description": "It loves mountains!",
+            "icon_color": "#000000",
+            "feature_link": ""
           }
         },
         "feature_ACnM4t": {
@@ -57,7 +63,9 @@
           "settings": {
             "icon": "bolt",
             "title": "Fast",
-            "description": "OMG So quick!"
+            "description": "OMG So quick!",
+            "icon_color": "#000000",
+            "feature_link": ""
           }
         }
       },
@@ -224,6 +232,132 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "best_sellers_FfeJxD": {
+      "type": "best-sellers",
+      "blocks": {
+        "product_DckmQh": {
+          "type": "product",
+          "settings": {
+            "product": "the-3p-fulfilled-snowboard",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_WCGF9N": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_ece8F3": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_4gxp9E": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_nkDx7B": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_MLT6XB": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_dKdJ4X": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_mE4Lth": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_nMTReE": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        },
+        "product_hUnC3p": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "background_color": "#f5f5f5",
+            "show_best_seller_badge": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "SAVE 10%"
+          }
+        }
+      },
+      "block_order": [
+        "product_DckmQh",
+        "product_WCGF9N",
+        "product_ece8F3",
+        "product_4gxp9E",
+        "product_nkDx7B",
+        "product_MLT6XB",
+        "product_dKdJ4X",
+        "product_mE4Lth",
+        "product_nMTReE",
+        "product_hUnC3p"
+      ],
+      "name": "Best Sellers",
+      "settings": {
+        "heading": "Best Sellers",
+        "show_view_all": true,
+        "view_all_text": "Shop All Best Sellers",
+        "view_all_link": "",
+        "show_more_text": "Show More",
+        "show_less_text": "Show Less"
+      }
     }
   },
   "order": [
@@ -232,6 +366,7 @@
     "6a3bb789-ce10-45f5-ae67-e2063ef8c76b",
     "featured_collection",
     "f1552b18-6017-4231-810d-74e61da22c37",
-    "38cdf60f-e431-43b5-aac3-7e6215447d67"
+    "38cdf60f-e431-43b5-aac3-7e6215447d67",
+    "best_sellers_FfeJxD"
   ]
 }
