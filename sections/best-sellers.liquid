@@ -1,0 +1,194 @@
+{% comment %}
+  Section: Best Sellers
+  File: sections/best-sellers.liquid
+{% endcomment %}
+
+<section class="best-sellers py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6 md:mb-8">
+    <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900">
+      {{ section.settings.heading }}
+    </h2>
+    {% if section.settings.show_view_all %}
+      <a 
+        href="{{ section.settings.view_all_link }}" 
+        class="hidden md:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+      >
+        {{ section.settings.view_all_text }}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    {% endif %}
+  </div>
+
+  <!-- Product Grid -->
+  <div class="product-grid">
+    <!-- Visible products (always shown) -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+      {% for block in section.blocks limit: 4 %}
+        {% render 'best-seller-card', block: block, index: forloop.index %}
+      {% endfor %}
+      
+      <!-- Desktop: Show remaining products inline -->
+      {% for block in section.blocks offset: 4 %}
+        <div class="hidden md:block">
+          {% render 'best-seller-card', block: block, index: forloop.index | plus: 4 %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Mobile: Hidden products container -->
+    <div 
+      id="mobile-hidden-products" 
+      class="md:hidden grid grid-cols-2 gap-4 overflow-hidden transition-all duration-500 ease-in-out"
+      style="max-height: 0; opacity: 0;"
+    >
+      {% for block in section.blocks offset: 4 %}
+        <div class="pt-4">
+          {% render 'best-seller-card', block: block, index: forloop.index | plus: 4 %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Mobile: Show More Button -->
+    {% if section.blocks.size > 4 %}
+      <div class="md:hidden flex justify-center mt-6">
+        <button 
+          id="show-more-btn"
+          class="bg-gray-900 text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+          onclick="toggleProducts()"
+        >
+          {{ section.settings.show_more_text }}
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  function toggleProducts() {
+    const hiddenProducts = document.getElementById('mobile-hidden-products');
+    const button = document.getElementById('show-more-btn');
+    const isExpanded = hiddenProducts.style.maxHeight !== '0px';
+
+    if (isExpanded) {
+      hiddenProducts.style.maxHeight = '0';
+      hiddenProducts.style.opacity = '0';
+      button.textContent = '{{ section.settings.show_more_text }}';
+    } else {
+      hiddenProducts.style.maxHeight = hiddenProducts.scrollHeight + 'px';
+      hiddenProducts.style.opacity = '1';
+      button.textContent = '{{ section.settings.show_less_text }}';
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "tag": "section",
+  "class": "best-sellers-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Text",
+      "default": "Shop All Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link"
+    },
+    {
+      "type": "text",
+      "id": "show_more_text",
+      "label": "Show More Button Text",
+      "default": "Show More"
+    },
+    {
+      "type": "text",
+      "id": "show_less_text",
+      "label": "Show Less Button Text",
+      "default": "Show Less"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Image (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": "Hover Image (optional)"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Card Background Color",
+          "default": "#f5f5f5"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_best_seller_badge",
+          "label": "Show Best Seller Badge",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Show Sale Badge",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sale_badge_text",
+          "label": "Sale Badge Text",
+          "default": "SAVE 10%"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

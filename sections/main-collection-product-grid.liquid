@@ -11,6 +11,11 @@
 {%- endif -%}
 
 {%- style -%}
+
+  .grid__item--tout {
+    grid-column: span 2;
+  }
+
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -25,8 +30,16 @@
 {%- endstyle -%}
 
 {%- liquid
-  assign products_before_tout = 3
-  assign total_touts = 3
+   # Touts Configuration - now from section settings
+  assign products_before_tout = section.settings.products_before_touts
+  assign enable_touts = section.settings.enable_touts
+  assign touts_first_page_only = section.settings.touts_first_page_only
+
+  # Get tout blocks
+  assign tout_blocks = section.blocks | where: 'type', 'tout'
+  assign total_touts = tout_blocks.size
+  # Dont repeat touts
+  assign touts_shown = 0
 -%}
 
 <div class="section-{{ section.id }}-padding">
@@ -157,19 +170,22 @@
                     assign lazy_load = true
                   endif
                   
-                  # We show a tout every three products so divide the for loop index by 3 and if there's a remainder show a tout. 
+                  # Determine if we should show a tout after this product
                   assign show_tout = false
-                  assign position_mod = forloop.index | modulo: products_before_tout
-                  if position_mod == 0
-                    assign show_tout = true
+                  if enable_touts and total_touts > 0
+                    assign position_mod = forloop.index | modulo: products_before_tout
+                    if position_mod == 0 and touts_shown < total_touts
+                      assign show_tout = true
+                    endif
+                    
+                    # Check if touts should only show on first page
+                    if touts_first_page_only and paginate.current_page != 1
+                      assign show_tout = false
+                    endif
                   endif
                    
-                  # I use the date to randomize the position of the touts. We had one a the end because of the for loop index starting at 0
-                  # assign tout_number = 'now' | date: '%N' | modulo: total_touts | plus: 1
-
-                  # removed the ranodm touts as it was showing the same tout multiple times instead just rotate them in order. 
-                  assign tout_index = forloop.index | divided_by: products_before_tout
-                  assign tout_number = tout_index | modulo: total_touts | plus: 1
+                   # Calculate which tout to display
+                  assign tout_index = forloop.index | divided_by: products_before_tout | minus: 1 | modulo: total_touts
                 -%}
                 
                 <li class="grid__item">
@@ -186,38 +202,21 @@
                 </li>
                 
                 {%- comment %} Insert tout after every 3 products {% endcomment -%}
+                {%- comment %} If there's less than 3 products no tout will appear as modulo will never be zero {% endcomment -%}
+               
                 {%- if show_tout -%}
+                  {%- assign current_tout = tout_blocks[tout_index] -%}
                   <li class="grid__item grid__item--tout">
-                    {%- case tout_number -%}
-                      {%- when 1 -%}
-                        {% render 'tout-card',
-                          tout_title: 'Snow much fun, snow little time',
-                          tout_subtitle: 'Get the best snowboard to make the most of it',
-                          tout_cta: 'Buy Now',
-                          tout_url: '/',
-                          tout_image: 'https://burst.shopifycdn.com/photos/snow-boarder-on-snowy-mountain.jpg?width=800&format=pjpg&exif=0&iptc=0d',
-                          media_aspect_ratio: section.settings.image_ratio
-                        %}
-                      {%- when 2 -%}
-                        {%- comment %} Tout 2: Empty text fields - tests graceful handling {% endcomment -%}
-                        {% render 'tout-card',
-                          tout_title: '',
-                          tout_subtitle: '',
-                          tout_cta: '',
-                          tout_url: '/',
-                          tout_image: 'https://burst.shopifycdn.com/photos/mountains-surrounding-a-ski-lift.jpg?width=800&format=pjpg&exif=0&iptc=0',
-                          media_aspect_ratio: section.settings.image_ratio
-                        %}
-                      {%- when 3 -%}
-                        {% render 'tout-card',
-                          tout_title: 'Close to heaven. Down to earth.',
-                          tout_subtitle: 'Jump into this collection',
-                          tout_cta: 'Buy now',
-                          tout_url: '/',
-                          tout_image: 'https://burst.shopifycdn.com/photos/empty-chairlifts-on-a-cable.jpg?width=800&format=pjpg&exif=0&iptc=0',
-                          media_aspect_ratio: section.settings.image_ratio
-                        %}
-                    {%- endcase -%}
+                    {% render 'tout-card',
+                      tout_title: current_tout.settings.title,
+                      tout_subtitle: current_tout.settings.subtitle,
+                      tout_cta: current_tout.settings.cta,
+                      tout_url: current_tout.settings.url,
+                      tout_image: current_tout.settings.image,
+                      tout_badge: current_tout.settings.badge,
+                      media_aspect_ratio: section.settings.image_ratio
+                    %}
+                    {%- assign touts_shown = touts_shown | plus: 1 -%}
                   </li>
                 {%- endif -%}
               {%- endfor -%}
@@ -237,6 +236,7 @@
 {
   "name": "t:sections.main-collection-product-grid.name",
   "class": "section",
+  "max_blocks": 4,
   "settings": [
     {
       "type": "range",
@@ -386,6 +386,72 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Promotional Touts"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_touts",
+      "default": true,
+      "label": "Enable promotional touts"
+    },
+    {
+      "type":"range",
+      "id": "products_before_touts",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label":"Products before touts"
+    },
+    {
+      "type": "checkbox",
+      "id": "touts_first_page_only",
+      "default": false,
+      "label": "Show touts on first page only"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "tout",
+      "name": "Promotional Tout",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Promotional title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Button text",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "info": "Leave blank to hide badge"
+        }
+      ]
     }
   ]
 }

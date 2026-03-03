@@ -1,17 +1,49 @@
-<!-- Remove boucne animation on scroll indicator for users have reduced motion setting -->
+
 <style>
   @media (prefers-reduced-motion: reduce) {
-    .tw-animate-bounce {
+    .gradient-animate {
       animation: none;
+    }
+  }
+
+  .gradient-animate {
+    background: linear-gradient(
+      45deg,
+      #f4a985,
+      #f28b5f,
+      #e966a0,
+      #d44d9a,
+      #9b8ec4,
+      #5ec4d4,
+      #f4a985
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+    filter: blur(80px);
+  }
+  
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
     }
   }
 </style>
 
-<section class="tw-relative tw-min-h-screen tw-bg-hidden-black tw-overflow-hidden tw-z-0" aria-labelledby="hero-heading">
-  <!-- Gradient Accent Background -->
-  <!-- Aria hidden is used to hide decorative elements from screen readers, improving accessibility. -->
+<section class="tw-relative tw-min-h-screen tw-bg-hidden-black tw-overflow-hidden tw-z-0">
+  <!-- Gradient Accent Background 
+  <div class="tw-absolute tw-inset-0">
+    <div class="tw-absolute tw-top-0 tw-right-0 tw-w-1/2 tw-h-full tw-bg-gradient-to-b tw-from-hidden-peach tw-via-hidden-pink tw-via-hidden-red tw-to-hidden-cyan tw-blur-3xl"></div>
+  </div>
+  -->
+  <!-- Animated Gradient Background -->
   <div class="tw-absolute tw-inset-0" aria-hidden="true">
-    <div class="tw-absolute tw-top-0 tw-right-0 tw-w-1/2 tw-h-full tw-bg-gradient-to-b tw-from-hidden-peach tw-via-hidden-pink tw-to-hidden-cyan tw-blur-3xl"></div>
+    <div class="tw-absolute tw-top-0 tw-right-0 tw-w-1/2 tw-h-full gradient-animate"></div>
   </div>
   
   <div class="tw-relative tw-z-10 tw-container tw-mx-auto tw-px-6 tw-py-20 tw-min-h-screen tw-flex tw-items-center">
@@ -28,7 +60,7 @@
         
         {% assign title = section.settings.product.title | default: section.settings.heading %}
         {% if title != blank %}
-          <h1 id="hero-heading" class="tw-text-5xl lg:tw-text-7xl tw-font-bold tw-leading-tight tw-text-gray-400">
+          <h1 class="tw-text-5xl lg:tw-text-7xl tw-font-bold tw-leading-tight tw-text-gray-400">
             {{ title }}
           </h1>
         {% endif %}
@@ -72,11 +104,11 @@
           endif
         %}
 
-        <!-- had label led by so screen readers know which element provides the label for the current element -->
+
         {% if section.settings.show_price and has_price %}
         <div class="tw-pt-4">
-          <span id="price-label" class="tw-text-gray-500 tw-text-sm tw-uppercase tw-tracking-wide">Starting at</span>
-          <span class="tw-block tw-text-3xl tw-font-bold tw-bg-gradient-to-r tw-from-hidden-peach tw-to-hidden-cyan tw-bg-clip-text tw-text-transparent" aria-labelledby="price-label" role="text">
+          <span class="tw-text-gray-500 tw-text-sm tw-uppercase tw-tracking-wide">Starting at</span>
+          <span class="tw-block tw-text-3xl tw-font-bold tw-bg-gradient-to-r tw-from-hidden-peach tw-to-hidden-cyan tw-bg-clip-text tw-text-transparent">
             {% if section.settings.product %}
                 {{ section.settings.product.price | money }}
               {% else %}
@@ -101,7 +133,7 @@
                    {{ product_image | image_url: width: 1200 }} 1200w"
            sizes="(max-width: 768px) 100vw, 50vw"
                  alt="{{ section.settings.product.featured_image.alt | default: section.settings.product.title | default: section.settings.heading | escape }}"
-                 class="tw-relative tw-z-10 lg:tw-max-h-[80vh] tw-max-h-[100vh] tw-w-auto tw-object-contain tw-drop-shadow-2xl"
+                 class="tw-relative tw-z-10 lg:tw-max-h-[80vh] tw-max-h-[100vh] tw-w-auto tw-object-contain tw-drop-shadow-2xl hover:tw-rotate-90"
                  width="800"
                  height="auto"
                  fetchpriority="high">
@@ -113,8 +145,7 @@
   </div>
   
   <!-- Scroll Indicator -->
-  <!-- Like the gradient add aria-hidden attribute to hide this from screen readers, as it's purely decorative. -->
-  <div class="tw-absolute tw-bottom-8 tw-left-1/2 tw--translate-x-1/2 tw-text-white/50 tw-animate-bounce" aria-hidden="true">
+  <div class="tw-absolute tw-bottom-8 tw-left-1/2 tw--translate-x-1/2 tw-text-white/50 tw-animate-bounce">
     <svg class="tw-w-6 tw-h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
     </svg>
