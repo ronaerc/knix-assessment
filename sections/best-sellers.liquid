@@ -3,7 +3,7 @@
   File: sections/best-sellers.liquid
 {% endcomment %}
 
-<section class="best-sellers tw-py-8 md:tw-py-12 lg:tw-py-16">
+<section class="best-sellers tw-py-8 md:tw-py-12 lg:tw-py-16 tw-overflow-hidden">
   <!-- Header - constrained to 160rem -->
   <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8">
     <div class="tw-flex tw-items-center tw-justify-between tw-mb-6 md:tw-mb-8">
@@ -24,21 +24,20 @@
     </div>
   </div>
 
-  <!-- Desktop Slider - full width, left-aligned to 160rem container -->
-  <div class="tw-hidden md:tw-block tw-overflow-hidden">
+  <!-- Desktop Slider -->
+  <div class="tw-hidden md:tw-block">
     <div 
       id="desktop-slider-{{ section.id }}" 
-      class="desktop-slider tw-flex tw-gap-6 tw-overflow-x-auto tw-pb-4 tw-scroll-smooth scrollbar-hide"
-      style="scroll-snap-type: x mandatory;"
+      class="desktop-slider tw-flex tw-gap-6 tw-pb-4 scrollbar-hide"
     >
       {% for block in section.blocks %}
-        <div class="tw-flex-shrink-0 tw-w-[280px] lg:tw-w-[300px] {% if forloop.first %}first-card{% endif %}" style="scroll-snap-align: start;">
+        <div class="tw-flex-none tw-w-[280px] lg:tw-w-[300px]" style="scroll-snap-align: start;">
           {% render 'best-seller-card', block: block, index: forloop.index %}
         </div>
       {% endfor %}
       
       <!-- Right spacer -->
-      <div class="tw-flex-shrink-0 tw-w-8"></div>
+      <div class="tw-flex-none tw-w-8"></div>
     </div>
   </div>
 
@@ -100,17 +99,21 @@
     display: none;
   }
   
-  /* Calculate left padding to align with 160rem container */
+  /* Slider styles */
   .desktop-slider {
     --container-max-width: 160rem;
-    --container-padding: 2rem; /* lg:px-8 = 2rem */
+    --container-padding: 2rem;
+    
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     padding-left: max(var(--container-padding), calc((100vw - var(--container-max-width)) / 2 + var(--container-padding)));
     padding-right: 2rem;
   }
   
   @media (max-width: 1024px) {
     .desktop-slider {
-      --container-padding: 1.5rem; /* md:px-6 = 1.5rem */
+      --container-padding: 1.5rem;
     }
   }
 </style>
@@ -146,7 +149,6 @@
         const scrollWidth = slider.scrollWidth - slider.clientWidth;
         const scrollPercentage = scrollWidth > 0 ? (scrollLeft / scrollWidth) * 100 : 0;
         
-        // Calculate width based on visible portion + scroll position
         const visibleRatio = slider.clientWidth / slider.scrollWidth;
         const barWidth = Math.max(visibleRatio * 100, 20);
         const maxLeft = 100 - barWidth;
