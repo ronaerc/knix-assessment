@@ -17,8 +17,6 @@
         <span class="tw-bg-white tw-text-black tw-text-xs tw-font-bold tw-px-4 tw-py-1.5 tw-rounded-full tw-uppercase tw-tracking-wide tw-border tw-border-black">
           Best Seller
         </span>
-      {% else %}
-        <span></span>
       {% endif %}
       
       {% if block.settings.show_sale_badge %}
@@ -103,11 +101,6 @@
       <span class="tw-text-lg tw-font-bold tw-text-gray-900">
         {{ product.price | money | default: '$104.95' }}
       </span>
-      {% if product.compare_at_price > product.price %}
-        <span class="tw-text-sm tw-text-gray-400 tw-line-through">
-          {{ product.compare_at_price | money }}
-        </span>
-      {% endif %}
     </div>
   </div>
 </div>
