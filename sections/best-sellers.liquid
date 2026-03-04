@@ -41,7 +41,6 @@
       </div>
     </div>
     
-    <!-- Custom Scrollbar - constrained to 160rem -->
     <div class="tw-max-w-[160rem] tw-mx-auto tw-px-4 md:tw-px-6 lg:tw-px-8 tw-mt-6">
       <div 
         id="scrollbar-track-{{ section.id }}" 
@@ -55,16 +54,13 @@
     </div>
   </div>
 
-  <!-- Mobile Grid - constrained to 160rem -->
   <div class="md:tw-hidden tw-max-w-[160rem] tw-mx-auto tw-px-4">
-    <!-- Visible products (first 4) -->
     <div class="tw-grid tw-grid-cols-2 tw-gap-4">
       {% for block in section.blocks limit: 4 %}
         {% render 'best-seller-card', block: block, index: forloop.index %}
       {% endfor %}
     </div>
 
-    <!-- Hidden products container -->
     {% if section.blocks.size > 4 %}
       <div 
         id="mobile-hidden-products-{{ section.id }}" 
@@ -78,7 +74,6 @@
         {% endfor %}
       </div>
 
-      <!-- Show More Button -->
       <div class="tw-flex tw-justify-center tw-mt-6">
         <button 
           id="show-more-btn-{{ section.id }}"
@@ -92,13 +87,11 @@
 </section>
 
 <style>
-  /* Slider wrapper */
   .desktop-slider-wrapper {
     width: 100%;
     overflow: hidden;
   }
   
-  /* Slider container */
   .desktop-slider {
     --container-max-width: 160rem;
     --container-padding: 2rem;
@@ -115,7 +108,6 @@
     display: none;
   }
   
-  /* Slider track (holds all cards) */
   .desktop-slider-track {
     display: inline-flex;
     gap: var(--slider-gap);
@@ -124,7 +116,6 @@
     padding-bottom: 0.5rem;
   }
   
-  /* Individual card */
   .desktop-slider-card {
     flex: 0 0 300px;
     width: 300px;
@@ -141,7 +132,6 @@
     }
   }
   
-  /* Custom Scrollbar */
   .scrollbar-track {
     position: relative;
     height: 2px;
@@ -189,7 +179,6 @@
       let startX = 0;
       let scrollLeft = 0;
       
-      // Calculate and update thumb size and position
       function updateScrollbar() {
         const scrollWidth = slider.scrollWidth;
         const clientWidth = slider.clientWidth;
@@ -205,7 +194,6 @@
         scrollbarThumb.style.left = thumbLeft + '%';
       }
       
-      // Scroll slider when clicking on track
       scrollbarTrack.addEventListener('click', function(e) {
         if (e.target === scrollbarThumb) return;
         
@@ -219,7 +207,6 @@
         });
       });
       
-      // Drag functionality for thumb
       scrollbarThumb.addEventListener('mousedown', function(e) {
         isDragging = true;
         scrollbarThumb.classList.add('is-dragging');
@@ -244,7 +231,6 @@
         scrollbarThumb.classList.remove('is-dragging');
       });
       
-      // Touch support for thumb
       scrollbarThumb.addEventListener('touchstart', function(e) {
         isDragging = true;
         scrollbarThumb.classList.add('is-dragging');
@@ -268,15 +254,12 @@
         scrollbarThumb.classList.remove('is-dragging');
       });
       
-      // Update scrollbar on scroll
       slider.addEventListener('scroll', updateScrollbar);
       window.addEventListener('resize', updateScrollbar);
       
-      // Initial update
       updateScrollbar();
     }
     
-    // Mobile show more toggle
     if (showMoreBtn && hiddenProducts) {
       showMoreBtn.addEventListener('click', function() {
         const isExpanded = hiddenProducts.style.maxHeight !== '0px';
